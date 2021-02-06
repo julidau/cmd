@@ -11,12 +11,11 @@ import (
 	"io"
 	"os"
 	"os/exec"
-	"time"
 	"sync"
+	"time"
 
 	"github.com/revel/cmd/model"
 	"github.com/revel/cmd/utils"
-	"runtime"
 )
 
 // App contains the configuration for running a Revel app.  (Not for the app itself)
@@ -135,11 +134,9 @@ func (cmd AppCmd) Kill() {
 
 		// Send an interrupt signal to allow for a graceful shutdown
 		utils.Logger.Info("Killing revel server pid", "pid", cmd.Process.Pid)
-		var err error
-		if runtime.GOOS != "windows" {
-			// os.Interrupt is not available on windows
-			err = cmd.Process.Signal(os.Interrupt)
-		}
+
+		// os.Interrupt is not available on windows
+		err := cmd.Process.Signal(os.Interrupt)
 
 		if err != nil {
 			utils.Logger.Info(
